@@ -19,6 +19,10 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     Queue/QueueElement.h \
     Queue/Queue.h \
-    Memory/Memory.h
+    Memory/Memory.h \
+    InformationSource/InformationSource.h \
+    StatisticsBlock/StatisticsBlock.h \
+    ProcessingUnit/ProcessingUnit.h \
+    ControlProgram/ControlProgram.h
 
 FORMS    += mainwindow.ui
