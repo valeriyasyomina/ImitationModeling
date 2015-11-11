@@ -14,7 +14,8 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    Memory/Memory.cpp
+    Memory/Memory.cpp \
+    Singleton/Singleton.cpp
 
 HEADERS  += mainwindow.h \
     Queue/QueueElement.h \
@@ -23,6 +24,7 @@ HEADERS  += mainwindow.h \
     InformationSource/InformationSource.h \
     StatisticsBlock/StatisticsBlock.h \
     ProcessingUnit/ProcessingUnit.h \
-    ControlProgram/ControlProgram.h
+    ControlProgram/ControlProgram.h \
+    Singleton/Singleton.h
 
 FORMS    += mainwindow.ui
