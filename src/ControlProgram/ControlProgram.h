@@ -12,6 +12,7 @@ private:
     InformationSource* informationSourse;
     ProcessingUnit* processingUnit;
     StatisticsBlock* statisticsBlock;
+    Memory* memory;
 public:
     ControlProgram();
     ~ControlProgram();

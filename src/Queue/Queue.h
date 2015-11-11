@@ -11,7 +11,7 @@ private:
     int size;
     int maxSize;
 public:
-    //Queue() {}
+    Queue();
     Queue(int maxSize);
     Queue(const Queue& queue);
     Queue operator=(const Queue& queue);
@@ -21,10 +21,18 @@ public:
     void Add(TypeName value);
     TypeName Get();
     bool isEmpty() {return !size ? true : false;}
-
+    void SetMaximumSize(int maxSize);
 private:
     void Free();
 };
+
+template <class TypeName>
+Queue<TypeName>::Queue()
+{
+    maxSize = 0;
+    size = 0;
+    head = NULL;
+}
 
 template <class TypeName>
 Queue<TypeName>::Queue(int maxSize)
@@ -36,6 +44,15 @@ Queue<TypeName>::Queue(int maxSize)
     this->maxSize = maxSize;
     size = 0;
     head = NULL;
+}
+
+template <class TypeName>
+void Queue<TypeName>::SetMaximumSize(int maxSize)
+{
+    if (maxSize > 0)
+    {
+        this->maxSize = maxSize;
+    }
 }
 
 template <class TypeName>
