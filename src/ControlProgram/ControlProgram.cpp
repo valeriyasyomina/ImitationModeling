@@ -2,7 +2,7 @@
 
 ControlProgram::ControlProgram()
 {
-    informationSourse = NULL;
+    informationSource = NULL;
     processingUnit = NULL;
     statisticsBlock = NULL;
     memory = NULL;
@@ -13,10 +13,10 @@ ControlProgram::ControlProgram()
 
 ControlProgram::~ControlProgram()
 {
-    if (informationSourse)
+    if (informationSource)
     {
-        delete informationSourse;
-        informationSourse = NULL;
+        delete informationSource;
+        informationSource = NULL;
     }
     if (processingUnit)
     {
@@ -38,7 +38,7 @@ ControlProgram::~ControlProgram()
 void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
                      double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator)
 {
-    informationSourse = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
+    informationSource = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
     processingUnit = new ProcessingUnit(a, b);
     statisticsBlock = new StatisticsBlock();
     memory = new Memory(maxMemorySize);
@@ -46,7 +46,7 @@ void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
 
     this->endModelingTime = endModelingTime;
 
-    timeArray[INFORMATION_SOURSE_INDEX] = informationSourse->GenerateRequestTime();
+    timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
     timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
 }
 
@@ -75,7 +75,7 @@ void ControlProgram::RealizeEvents()
     {
         Request request(currentModelingTime);
         memory->PutRequest(request);
-        timeArray[INFORMATION_SOURSE_INDEX] = informationSourse->GenerateRequestTime();
+        timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
     }
     if (timeArray[PROCESSING_UNIT_INDEX] <= currentModelingTime)
     {

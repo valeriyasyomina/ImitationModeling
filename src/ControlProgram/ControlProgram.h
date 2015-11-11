@@ -13,7 +13,7 @@ const int PROCESSING_UNIT_INDEX =1;
 class ControlProgram
 {
 private:
-    InformationSource* informationSourse;
+    InformationSource* informationSource;
     ProcessingUnit* processingUnit;
     StatisticsBlock* statisticsBlock;
     Memory* memory;
