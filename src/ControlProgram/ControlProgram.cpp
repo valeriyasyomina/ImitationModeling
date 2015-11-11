@@ -5,6 +5,7 @@ ControlProgram::ControlProgram()
     informationSourse = new InformationSource();
     processingUnit = new ProcessingUnit();
     statisticsBlock = new StatisticsBlock();
+    memory = new Memory();
 }
 
 ControlProgram::~ControlProgram()
@@ -23,5 +24,10 @@ ControlProgram::~ControlProgram()
     {
         delete statisticsBlock;
         statisticsBlock = NULL;
+    }
+    if (memory)
+    {
+        delete memory;
+        memory = NULL;
     }
 }

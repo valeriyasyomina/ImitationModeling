@@ -17,6 +17,8 @@ public:
     ControlProgram();
     ~ControlProgram();
 
+    void SetMaximumMemorySize(int maxSize) {memory->SetMaximumSize(maxSize);}
+
 };
 
 #endif // CONTROLPROGRAM_H
