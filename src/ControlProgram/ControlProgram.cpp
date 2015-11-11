@@ -37,9 +37,9 @@ ControlProgram::~ControlProgram()
 }
 
 void ControlProgram::ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
-                     double a, double b, double matExp, double sigma)
+                     double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator)
 {
-    informationSourse = new InformationSource(sigma, matExp);
+    informationSourse = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
     processingUnit = new ProcessingUnit(a, b);
     statisticsBlock = new StatisticsBlock();
     memory = new Memory(maxMemorySize);

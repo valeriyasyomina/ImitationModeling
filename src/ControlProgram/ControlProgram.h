@@ -24,7 +24,7 @@ public:
     ~ControlProgram();
 
     void ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
-                         double a, double b, double matExp, double sigma);
+                         double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator);
     void StartModeling();
 };
 

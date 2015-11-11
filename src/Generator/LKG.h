@@ -3,11 +3,15 @@
 
 class LKG
 {
-private:
-    const double a = 106;
-    const double b = 1283;
-    const double m = 6075;
-
+protected:
+    static int a;
+    static int b;
+    static int m;
+public:
+    static int GenerateValue(int previousValue, int lowBorder, int highBorder);
+protected:
+    static int Generator(int previousValue);
+    static int TransformValueIntoBorders(int value, int lowBorder, int highBorder);
 };
 
 #endif // LKG_H

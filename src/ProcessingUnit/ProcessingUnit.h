@@ -1,6 +1,8 @@
 #ifndef PROCESSINGUNIT_H
 #define PROCESSINGUNIT_H
 
+#include "../Generator/LKG.h"
+
 class ProcessingUnit
 {
 private:
@@ -15,10 +17,7 @@ public:
     }
     ~ProcessingUnit() {}
 
-    double GetA() const {return a;}
-    double GetB() const {return b;}
-    void SetA(double a) {this->a = a;}
-    void SetB(double b) {this->b = b;}
+
 };
 
 #endif // PROCESSINGUNIT_H
