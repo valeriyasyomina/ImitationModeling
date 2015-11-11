@@ -19,16 +19,24 @@ void MainWindow::on_pushButton_clicked()
     q.Add(1);
     q.Add(2);
     q.Add(3);
-
     q = q;
-
-  /*  Queue<int> q2(2);
-       q2.Add(5);
-    q = q2;*/
-
     int a = 0;
     a = a + 9;
     a++;
-  //  int a = q.Get();
-   // int b = a + 1;
+}
+
+void MainWindow::on_btnStartModeling_clicked()
+{
+    double endModelingTime = ui->edtModelingTime->text().toDouble();
+    int maxMemorySize = ui->edtMaxMemorySize->text().toInt();
+    double a = ui->edtA->text().toDouble();
+    double b = ui->edtB->text().toDouble();
+    double sigma = ui->edtSigma->text().toDouble();
+    double matExp = ui->edtMatExp->text().toDouble();
+    double maxBorder = ui->edtMaxBorder->text().toDouble();
+
+    Singleton::Instance().GetControlProgram()->ConfigureSystem(endModelingTime, maxMemorySize, a, b, matExp,
+                                                               sigma, maxBorder);
+
+    Singleton::Instance().GetControlProgram()->StartModeling();
 }

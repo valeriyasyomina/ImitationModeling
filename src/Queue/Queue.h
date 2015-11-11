@@ -96,6 +96,7 @@ Queue<TypeName>::~Queue()
 {
     Free();
 }
+
 template <class TypeName>
 void Queue<TypeName>::Free()
 {
@@ -115,40 +116,39 @@ void Queue<TypeName>::Free()
 template <class TypeName>
 void Queue<TypeName>::Add(TypeName value)
 {
-    if (size >= maxSize)
+    if (size < maxSize)
     {
-        //exc
-    }
-    if (!head)
-    {
-        head = new QueueElement<TypeName>(value);
-        //exc
-        size++;
-    }
-    else
-    {
-        QueueElement<TypeName>* curPointer = head;
-        for (; curPointer->next; curPointer = curPointer->next)
-            ;
-        QueueElement<TypeName>* element = new QueueElement<TypeName>(value);
-        //exception
-        curPointer->next = element;
-        size++;
-    }
+        if (!head)
+        {
+            head = new QueueElement<TypeName>(value);
+            //exc
+            size++;
+        }
+        else
+        {
+            QueueElement<TypeName>* curPointer = head;
+            for (; curPointer->next; curPointer = curPointer->next)
+                ;
+            QueueElement<TypeName>* element = new QueueElement<TypeName>(value);
+            //exception
+            curPointer->next = element;
+            size++;
+        }
+    }    
 }
+
 template <class TypeName>
 TypeName Queue<TypeName>::Get()
 {
-    if (!size)
+    if (size > 0)
     {
-        //exception
-    }
-    TypeName value = head->value;
-    QueueElement<TypeName>* currentPointer = head;
-    head = head->next;
-    delete currentPointer;
-    size--;
-    return value;
+        TypeName value = head->value;
+        QueueElement<TypeName>* currentPointer = head;
+        head = head->next;
+        delete currentPointer;
+        size--;
+        return value;
+    }    
 }
 
 

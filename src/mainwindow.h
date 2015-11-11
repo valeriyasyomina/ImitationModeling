@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "Queue/Queue.h"
+#include "Singleton/Singleton.h"
 
 namespace Ui {
 class MainWindow;
@@ -18,6 +18,8 @@ public:
 
 private slots:
     void on_pushButton_clicked();
+
+    void on_btnStartModeling_clicked();
 
 private:
     Ui::MainWindow *ui;
