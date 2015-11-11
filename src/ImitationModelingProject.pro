@@ -18,7 +18,8 @@ SOURCES += main.cpp\
     Singleton/Singleton.cpp \
     ControlProgram/ControlProgram.cpp \
     Generator/LKG.cpp \
-    Generator/NormalGenerator.cpp
+    Generator/NormalGenerator.cpp \
+    ProcessingUnit/ProcessingUnit.cpp
 
 HEADERS  += mainwindow.h \
     Queue/QueueElement.h \

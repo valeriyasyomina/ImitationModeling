@@ -46,9 +46,26 @@ void ControlProgram::ConfigureSystem(double timeStep, double endModelingTime, in
 
     this->timeStep = timeStep;
     this->endModelingTime = endModelingTime;
+
+    timeArray[INFORMATION_SOURSE_INDEX] = informationSourse->GenerateRequestTime();
+    timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
 }
 
 void ControlProgram::StartModeling()
 {
-    //for (currentModelingTime = 0.0; currentModelingTime )
+    for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime + timeStep / 2.0; currentModelingTime += timeStep)
+    {
+        double minTime = GetMinTime();
+    }
+}
+
+double ControlProgram::GetMinTime()
+{
+    double minTime = timeArray[0];
+    for (int i = 1; i < ARRAY_SIZE; i++)
+    {
+        if (timeArray[i] > minTime)
+            minTime = timeArray[i];
+    }
+    return minTime;
 }

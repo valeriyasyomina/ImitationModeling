@@ -8,16 +8,18 @@ class ProcessingUnit
 private:
     double a;
     double b;
+    double previousTime;
 public:
-    ProcessingUnit() {}
+    ProcessingUnit(): a(0.0), b(0.0), previousTime(0.0) {}
     ProcessingUnit(double a, double b)
     {
         this->a = a;
         this->b = b;
+        previousTime = 0.0;
     }
     ~ProcessingUnit() {}
 
-
+    double GetProcessTime();
 };
 
 #endif // PROCESSINGUNIT_H

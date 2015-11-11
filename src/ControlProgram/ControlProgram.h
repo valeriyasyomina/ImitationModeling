@@ -6,7 +6,9 @@
 #include "../Memory/Memory.h"
 #include "../StatisticsBlock/StatisticsBlock.h"
 
-#define ARRAY_SIZE 3
+const int ARRAY_SIZE = 2;
+const int INFORMATION_SOURSE_INDEX = 0;
+const int PROCESSING_UNIT_INDEX =1;
 
 class ControlProgram
 {
@@ -26,6 +28,8 @@ public:
     void ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
                          double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator);
     void StartModeling();
+private:
+    double GetMinTime();
 };
 
 #endif // CONTROLPROGRAM_H

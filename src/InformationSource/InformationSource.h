@@ -14,6 +14,7 @@ public:
 
     ~InformationSource() {}
 
+    double GenerateRequestTime() {return normalGenerator.GenerateValue();}
 };
 
 #endif // INFORMATIONSOURCE_H

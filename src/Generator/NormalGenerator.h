@@ -15,9 +15,9 @@ public:
     NormalGenerator(double sigma, double matExp, int minBorder, int maxBorder, int iterationNumber);
     ~NormalGenerator() {}
 
-    double GenerateValue(int lowBorder, int highBorder);
+    double GenerateValue();
 protected:
-    double TransformValueIntoBorders(double value, int lowBorder, int highBorder);
+    double TransformValueIntoBorders(double value);
 
 };
 

@@ -22,24 +22,24 @@ NormalGenerator::NormalGenerator(double sigma, double matExp, int minBorder, int
     //cureentNumber
 }
 
-double NormalGenerator::GenerateValue(int lowBorder, int highBorder)
+double NormalGenerator::GenerateValue()
 {
     double sum = 0.0;
     for (int i = 0; i < iterationNumber; i++)
     {
-        currentNumber = LKG::GenerateValue(currentNumber, lowBorder, highBorder);
+        currentNumber = LKG::GenerateValue(currentNumber, minBorder, maxBorder);
         sum += currentNumber;
     }
     double number = matExp + (sum - iterationNumber / 2) * sigma;
-    return TransformValueIntoBorders(number, lowBorder, highBorder);
+    return TransformValueIntoBorders(number);
 }
 
-double NormalGenerator::TransformValueIntoBorders(double value, int lowBorder, int highBorder)
+double NormalGenerator::TransformValueIntoBorders(double value)
 {
-    double interval = highBorder - lowBorder;
-    while (value > highBorder)
+    double interval = maxBorder - minBorder;
+    while (value > maxBorder)
         value -= interval;
-    while (value < lowBorder)
-        value += lowBorder;
+    while (value < minBorder)
+        value += interval;
     return value;
 }
