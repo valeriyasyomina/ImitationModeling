@@ -16,7 +16,8 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     Memory/Memory.cpp \
     Singleton/Singleton.cpp \
-    ControlProgram/ControlProgram.cpp
+    ControlProgram/ControlProgram.cpp \
+    Generator/LKG.cpp
 
 HEADERS  += mainwindow.h \
     Queue/QueueElement.h \
@@ -26,6 +27,8 @@ HEADERS  += mainwindow.h \
     ProcessingUnit/ProcessingUnit.h \
     ControlProgram/ControlProgram.h \
     Singleton/Singleton.h \
-    Queue/Queue.h
+    Queue/Queue.h \
+    Request/Request.h \
+    Generator/LKG.h
 
 FORMS    += mainwindow.ui

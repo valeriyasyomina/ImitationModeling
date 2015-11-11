@@ -2,10 +2,14 @@
 
 ControlProgram::ControlProgram()
 {
-    informationSourse = new InformationSource();
-    processingUnit = new ProcessingUnit();
-    statisticsBlock = new StatisticsBlock();
-    memory = new Memory();
+    informationSourse = NULL;
+    processingUnit = NULL;
+    statisticsBlock = NULL;
+    memory = NULL;
+
+    endModelingTime = 0.0;
+    currentModelingTime = 0.0;
+    timeStep = 0.0;
 }
 
 ControlProgram::~ControlProgram()
@@ -30,4 +34,21 @@ ControlProgram::~ControlProgram()
         delete memory;
         memory = NULL;
     }
+}
+
+void ControlProgram::ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
+                     double a, double b, double matExp, double sigma)
+{
+    informationSourse = new InformationSource(sigma, matExp);
+    processingUnit = new ProcessingUnit(a, b);
+    statisticsBlock = new StatisticsBlock();
+    memory = new Memory(maxMemorySize);
+
+    this->timeStep = timeStep;
+    this->endModelingTime = endModelingTime;
+}
+
+void ControlProgram::StartModeling()
+{
+    //for (currentModelingTime = 0.0; currentModelingTime )
 }

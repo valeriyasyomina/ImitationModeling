@@ -6,6 +6,8 @@
 #include "../Memory/Memory.h"
 #include "../StatisticsBlock/StatisticsBlock.h"
 
+#define ARRAY_SIZE 3
+
 class ControlProgram
 {
 private:
@@ -13,12 +15,17 @@ private:
     ProcessingUnit* processingUnit;
     StatisticsBlock* statisticsBlock;
     Memory* memory;
+    double timeArray[ARRAY_SIZE];
+    double currentModelingTime;
+    double timeStep;
+    double endModelingTime;
 public:
     ControlProgram();
     ~ControlProgram();
 
-    void SetMaximumMemorySize(int maxSize) {memory->SetMaximumSize(maxSize);}
-
+    void ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
+                         double a, double b, double matExp, double sigma);
+    void StartModeling();
 };
 
 #endif // CONTROLPROGRAM_H
