@@ -13,6 +13,8 @@ public:
     Memory(int maxMemorySize): queue(maxMemorySize) {}
     ~Memory() {}
     void SetMaximumSize(int maxSize) {queue.SetMaximumSize(maxSize);}
+
+    bool isEmpty() {return queue.isEmpty();}
     Request GetRequest() {return queue.Get();}
     void PutRequest(const Request& request) {queue.Add(request);}
 };

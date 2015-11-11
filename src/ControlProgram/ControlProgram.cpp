@@ -9,7 +9,6 @@ ControlProgram::ControlProgram()
 
     endModelingTime = 0.0;
     currentModelingTime = 0.0;
-    timeStep = 0.0;
 }
 
 ControlProgram::~ControlProgram()
@@ -36,7 +35,7 @@ ControlProgram::~ControlProgram()
     }
 }
 
-void ControlProgram::ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
+void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
                      double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator)
 {
     informationSourse = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
@@ -44,7 +43,7 @@ void ControlProgram::ConfigureSystem(double timeStep, double endModelingTime, in
     statisticsBlock = new StatisticsBlock();
     memory = new Memory(maxMemorySize);
 
-    this->timeStep = timeStep;
+
     this->endModelingTime = endModelingTime;
 
     timeArray[INFORMATION_SOURSE_INDEX] = informationSourse->GenerateRequestTime();
@@ -53,9 +52,10 @@ void ControlProgram::ConfigureSystem(double timeStep, double endModelingTime, in
 
 void ControlProgram::StartModeling()
 {
-    for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime + timeStep / 2.0; currentModelingTime += timeStep)
+    for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime; currentModelingTime)
     {
-        double minTime = GetMinTime();
+        currentModelingTime = GetMinTime();
+        RealizeEvents();
     }
 }
 
@@ -68,4 +68,21 @@ double ControlProgram::GetMinTime()
             minTime = timeArray[i];
     }
     return minTime;
+}
+void ControlProgram::RealizeEvents()
+{
+    if (timeArray[INFORMATION_SOURSE_INDEX] <= currentModelingTime)
+    {
+        Request request(currentModelingTime);
+        memory->PutRequest(request);
+        timeArray[INFORMATION_SOURSE_INDEX] = informationSourse->GenerateRequestTime();
+    }
+    if (timeArray[PROCESSING_UNIT_INDEX] <= currentModelingTime)
+    {
+        if (!memory->isEmpty())
+        {
+            Request request = memory->GetRequest();
+            timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
+        }
+    }
 }

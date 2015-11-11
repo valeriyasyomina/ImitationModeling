@@ -1,5 +1,6 @@
 #include "NormalGenerator.h"
 #include "LKG.h"
+#include <time.h>
 
 NormalGenerator::NormalGenerator()
 {

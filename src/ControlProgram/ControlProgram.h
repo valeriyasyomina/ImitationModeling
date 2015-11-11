@@ -19,17 +19,17 @@ private:
     Memory* memory;
     double timeArray[ARRAY_SIZE];
     double currentModelingTime;
-    double timeStep;
     double endModelingTime;
 public:
     ControlProgram();
     ~ControlProgram();
 
-    void ConfigureSystem(double timeStep, double endModelingTime, int maxMemorySize,
+    void ConfigureSystem(double endModelingTime, int maxMemorySize,
                          double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator);
     void StartModeling();
 private:
     double GetMinTime();
+    void RealizeEvents();
 };
 
 #endif // CONTROLPROGRAM_H
