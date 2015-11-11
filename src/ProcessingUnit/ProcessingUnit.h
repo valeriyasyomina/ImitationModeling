@@ -3,6 +3,9 @@
 
 class ProcessingUnit
 {
+public:
+    ProcessingUnit() {}
+    ~ProcessingUnit() {}
 
 };
 

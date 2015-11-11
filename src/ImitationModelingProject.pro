@@ -15,7 +15,8 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     Memory/Memory.cpp \
-    Singleton/Singleton.cpp
+    Singleton/Singleton.cpp \
+    ControlProgram/ControlProgram.cpp
 
 HEADERS  += mainwindow.h \
     Queue/QueueElement.h \

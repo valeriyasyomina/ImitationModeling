@@ -3,6 +3,9 @@
 
 class InformationSource
 {
+public:
+    InformationSource() {}
+    ~InformationSource() {}
 
 };
 

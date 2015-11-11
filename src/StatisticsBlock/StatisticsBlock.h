@@ -3,7 +3,9 @@
 
 class StatisticsBlock
 {
-
+public:
+    StatisticsBlock() {}
+    ~StatisticsBlock() {}
 };
 
 #endif // STATISTICSBLOCK_H
