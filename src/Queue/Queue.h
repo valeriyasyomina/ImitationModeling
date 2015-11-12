@@ -148,7 +148,7 @@ template <class TypeName>
 TypeName Queue<TypeName>::Get()
 {
     if (!size)
-        throw QueueEmptyException("Queue is empty!");
+        throw QueueEmptyException("Error get value! Queue is empty!");
 
     TypeName value = head->value;
     QueueElement<TypeName>* currentPointer = head;
