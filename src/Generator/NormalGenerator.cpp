@@ -1,7 +1,7 @@
 #include "NormalGenerator.h"
 #include "LKG.h"
 #include "Exception/ErrorInputDataException.h"
-#include <time.h>
+#include <QDateTime>
 
 NormalGenerator::NormalGenerator()
 {
@@ -22,8 +22,7 @@ NormalGenerator::NormalGenerator(double sigma, double matExp, int minBorder, int
     this->minBorder = minBorder;
     this->maxBorder = maxBorder;
     this->iterationNumber = iterationNumber;
-
-    //cureentNumber
+    this->currentNumber = QDateTime::currentMSecsSinceEpoch();
 }
 
 double NormalGenerator::GenerateValue()
