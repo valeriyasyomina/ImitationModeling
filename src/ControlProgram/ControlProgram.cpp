@@ -54,6 +54,7 @@ void ControlProgram::StartModeling()
 {
     for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime; currentModelingTime)
     {
+        statisticsBlock->CollectStatistics();
         currentModelingTime = GetMinTime();
         RealizeEvents();
     }

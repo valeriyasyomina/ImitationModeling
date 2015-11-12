@@ -20,8 +20,9 @@ public:
 
     void Add(TypeName value);
     TypeName Get();
-    bool isEmpty() {return !size ? true : false;}
+    bool isEmpty() const {return !size ? true : false;}
     void SetMaximumSize(int maxSize);
+    int Size() const {return size;}
 private:
     void Free();
 };

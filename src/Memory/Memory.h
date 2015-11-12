@@ -14,9 +14,10 @@ public:
     ~Memory() {}
     void SetMaximumSize(int maxSize) {queue.SetMaximumSize(maxSize);}
 
-    bool isEmpty() {return queue.isEmpty();}
+    bool isEmpty() const {return queue.isEmpty();}
     Request GetRequest() {return queue.Get();}
     void PutRequest(const Request& request) {queue.Add(request);}
+    int Size() const {return queue.Size();}
 };
 
 #endif // MEMORY_H

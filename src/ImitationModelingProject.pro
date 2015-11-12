@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     ControlProgram/ControlProgram.cpp \
     Generator/LKG.cpp \
     Generator/NormalGenerator.cpp \
-    ProcessingUnit/ProcessingUnit.cpp
+    ProcessingUnit/ProcessingUnit.cpp \
+    StatisticsBlock/StatisticsBlock.cpp
 
 HEADERS  += mainwindow.h \
     Queue/QueueElement.h \

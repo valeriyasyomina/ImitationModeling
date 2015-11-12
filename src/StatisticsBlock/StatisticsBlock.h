@@ -10,11 +10,7 @@ public:
     StatisticsBlock() {}
     ~StatisticsBlock() {}
 
-    void CollectStatistics() {emit Collect();}
-public slots:
-    void MemoryStatistics() {}
-    void InformationSourceStatistics() {}
-    void ProcessingUnitStatistics() {}
+    void CollectStatistics();
 signals:
     void Collect();
 };
