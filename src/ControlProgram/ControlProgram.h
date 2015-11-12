@@ -10,8 +10,9 @@ const int ARRAY_SIZE = 2;
 const int INFORMATION_SOURSE_INDEX = 0;
 const int PROCESSING_UNIT_INDEX =1;
 
-class ControlProgram
+class ControlProgram : public QObject
 {
+    Q_OBJECT
 private:
     InformationSource* informationSource;
     ProcessingUnit* processingUnit;
@@ -30,6 +31,11 @@ public:
 private:
     double GetMinTime();
     void RealizeEvents();
+
+public slots:
+    void StatisticsCollected(int currentRequestsNumberInMemory);
+signals:
+    void StatisticsCollectedSignal(int currentRequestsNumberInMemory);
 };
 
 #endif // CONTROLPROGRAM_H

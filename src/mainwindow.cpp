@@ -6,6 +6,8 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    connect(Singleton::Instance().GetControlProgram(), SIGNAL(StatisticsCollectedSignal(int)), this,
+            SLOT(StatisticsCollected(int)));
 }
 
 MainWindow::~MainWindow()
@@ -52,4 +54,9 @@ void MainWindow::on_btnStartModeling_clicked()
     {
         QMessageBox::information(this, "Error", exception.GetMessage(), QMessageBox::Ok);
     }
+}
+
+void MainWindow::StatisticsCollected(int currentRequestsNumberInMemory)
+{
+    ui->lwStatistics->addItem(QString::null(currentRequestsNumberInMemory));
 }

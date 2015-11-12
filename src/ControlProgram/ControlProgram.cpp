@@ -38,23 +38,33 @@ ControlProgram::~ControlProgram()
 void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
                      double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator)
 {
-    informationSource = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
-    processingUnit = new ProcessingUnit(a, b);
-    statisticsBlock = new StatisticsBlock();
-    memory = new Memory(maxMemorySize);
+    try
+    {
+        if (endModelingTime <= 0 || maxMemorySize <= 0 || sigma < 0)
+            throw ErrorInputDataException("Error input parameters in ControlProgram::ConfigureSystem");
+        informationSource = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
+        processingUnit = new ProcessingUnit(a, b);
+        statisticsBlock = new StatisticsBlock();
+        memory = new Memory(maxMemorySize);
 
+        connect(statisticsBlock, SIGNAL(CollectStatisticsSignal(int)), this, SLOT(StatisticsCollected(int)));
 
-    this->endModelingTime = endModelingTime;
+        this->endModelingTime = endModelingTime;
 
-    timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
-    timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
+        timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
+        timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
+    }
+    catch (std::bad_alloc& exception)
+    {
+        throw AllocMemoryException("Erro allocate memory in ControlProgram::ConfigureSystem");
+    }
 }
 
 void ControlProgram::StartModeling()
 {
     for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime; currentModelingTime)
     {
-        statisticsBlock->CollectStatistics();
+        statisticsBlock->CollectStatistics(memory->Size());
         currentModelingTime = GetMinTime();
         RealizeEvents();
     }
@@ -86,4 +96,9 @@ void ControlProgram::RealizeEvents()
             timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
         }
     }
+}
+
+void ControlProgram::StatisticsCollected(int currentRequestsNumberInMemory)
+{
+    emit StatisticsCollectedSignal(currentRequestsNumberInMemory);
 }

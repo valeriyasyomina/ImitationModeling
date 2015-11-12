@@ -22,6 +22,8 @@ private slots:
 
     void on_btnStartModeling_clicked();
 
+public slots:
+    void StatisticsCollected(int currentRequestsNumberInMemory);
 private:
     Ui::MainWindow *ui;
 };

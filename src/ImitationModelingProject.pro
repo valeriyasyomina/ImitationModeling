@@ -33,6 +33,11 @@ HEADERS  += mainwindow.h \
     Queue/Queue.h \
     Request/Request.h \
     Generator/LKG.h \
-    Generator/NormalGenerator.h
+    Generator/NormalGenerator.h \
+    Exception/AllocMemoryException.h \
+    Exception/ErrorInputDataException.h \
+    Exception/Exception.h \
+    Exception/QueueFullException.h \
+    Exception/QueueEmptyException.h
 
 FORMS    += mainwindow.ui

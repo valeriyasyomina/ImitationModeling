@@ -10,9 +10,9 @@ public:
     StatisticsBlock() {}
     ~StatisticsBlock() {}
 
-    void CollectStatistics();
+    void CollectStatistics(int currentRequestsNumberInMemory);
 signals:
-    void Collect();
+    void CollectStatisticsSignal(int currentRequestsNumberInMemory);
 };
 
 #endif // STATISTICSBLOCK_H
