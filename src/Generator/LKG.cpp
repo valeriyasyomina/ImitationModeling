@@ -6,6 +6,11 @@ int LKG::GenerateValue(int previousValue, int lowBorder, int highBorder)
     return TransformValueIntoBorders(generatedNumber, lowBorder, highBorder);
 }
 
+int LKG::GenerateValue(int previousValue)
+{
+    return Generator(previousValue);
+}
+
 int LKG::Generator(int previousValue)
 {
     return (a * previousValue + b) % m;

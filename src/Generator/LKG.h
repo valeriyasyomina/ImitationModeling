@@ -9,6 +9,7 @@ protected:
     static int m;
 public:
     static int GenerateValue(int previousValue, int lowBorder, int highBorder);
+    static int GenerateValue(int previousValue);
 protected:
     static int Generator(int previousValue);
     static int TransformValueIntoBorders(int value, int lowBorder, int highBorder);
