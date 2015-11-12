@@ -15,7 +15,7 @@ NormalGenerator::NormalGenerator()
 
 NormalGenerator::NormalGenerator(double sigma, double matExp, int minBorder, int maxBorder, int iterationNumber)
 {
-    if (sigma < 0 || iterationNumber <= 0 || minBorder >= maxBorder)
+    if (sigma < 0 || iterationNumber <= 0 || minBorder >= maxBorder || sigma == (double) maxBorder)
         throw ErrorInputDataException("Error parameters in NormalGenerator::NormalGenerator");
     this->sigma = sigma;
     this->matExp = matExp;
@@ -30,7 +30,7 @@ double NormalGenerator::GenerateValue()
     double sum = 0.0;
     for (int i = 0; i < iterationNumber; i++)
     {
-        currentNumber = LKG::GenerateValue(currentNumber, minBorder, maxBorder);
+        currentNumber = LKG::GenerateValue(currentNumber);
         sum += currentNumber;
     }
     double number = matExp + (sum - iterationNumber / 2) * sigma;
