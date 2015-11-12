@@ -31,7 +31,7 @@ public:
 private:
     double GetMinTime();
     void RealizeEvents();
-
+    void CleanTimeArray();
 public slots:
     void StatisticsCollected(int currentRequestsNumberInMemory);
 signals:

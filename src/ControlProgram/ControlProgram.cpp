@@ -40,7 +40,7 @@ void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
 {
     try
     {
-        if (endModelingTime <= 0 || maxMemorySize <= 0 || sigma < 0)
+        if (endModelingTime <= 0 || maxMemorySize <= 0 || sigma < 0 || sigma == maxBorderForNormalGenerator)
             throw ErrorInputDataException("Error input parameters in ControlProgram::ConfigureSystem");
         informationSource = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
         processingUnit = new ProcessingUnit(a, b);
@@ -75,7 +75,7 @@ double ControlProgram::GetMinTime()
     double minTime = timeArray[0];
     for (int i = 1; i < ARRAY_SIZE; i++)
     {
-        if (timeArray[i] > minTime)
+        if (timeArray[i] < minTime)
             minTime = timeArray[i];
     }
     return minTime;
@@ -96,6 +96,12 @@ void ControlProgram::RealizeEvents()
             timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
         }
     }
+}
+
+void ControlProgram::CleanTimeArray()
+{
+    for (int i = 0; i < ARRAY_SIZE; i++)
+        timeArray[i] = 0.0;
 }
 
 void ControlProgram::StatisticsCollected(int currentRequestsNumberInMemory)
