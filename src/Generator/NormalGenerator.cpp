@@ -1,5 +1,6 @@
 #include "NormalGenerator.h"
 #include "LKG.h"
+#include "Exception/ErrorInputDataException.h"
 #include <time.h>
 
 NormalGenerator::NormalGenerator()
@@ -14,6 +15,8 @@ NormalGenerator::NormalGenerator()
 
 NormalGenerator::NormalGenerator(double sigma, double matExp, int minBorder, int maxBorder, int iterationNumber)
 {
+    if (sigma < 0 || iterationNumber <= 0 || minBorder >= maxBorder)
+        throw ErrorInputDataException("Error parameters in NormalGenerator::NormalGenerator");
     this->sigma = sigma;
     this->matExp = matExp;
     this->minBorder = minBorder;

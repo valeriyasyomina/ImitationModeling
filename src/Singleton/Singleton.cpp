@@ -5,7 +5,14 @@ Singleton Singleton::instance;
 
 Singleton::Singleton()
 {
-    controlProgram = new ControlProgram();
+    try
+    {
+        controlProgram = new ControlProgram();
+    }
+    catch (std::bad_alloc& exception)
+    {
+        throw AllocMemoryException("Error allocate memory in Singleton::Singleton()");
+    }
 }
 
 Singleton::~Singleton()
@@ -19,9 +26,16 @@ Singleton::~Singleton()
 
 ControlProgram* Singleton::GetControlProgram()
 {
-    if (!controlProgram)
-        controlProgram = new ControlProgram();
-    return controlProgram;
+    try
+    {
+        if (!controlProgram)
+            controlProgram = new ControlProgram();
+        return controlProgram;
+    }
+    catch (std::bad_alloc& exception)
+    {
+        throw AllocMemoryException("Error allocate memory in Singleton::GetControlProgram()");
+    }
 }
 
 
