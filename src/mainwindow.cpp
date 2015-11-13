@@ -28,6 +28,7 @@ void MainWindow::on_btnStartModeling_clicked()
             QMessageBox::information(this, "Error", "You have not inputed all data!", QMessageBox::Ok);
         else
         {
+            ui->lwStatistics->addItem("");
             double endModelingTime = ui->edtModelingTime->text().toDouble();
             int maxMemorySize = ui->edtMaxMemorySize->text().toInt();
             double a = ui->edtA->text().toDouble();
