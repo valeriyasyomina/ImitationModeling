@@ -53,12 +53,13 @@ void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
         statisticsBlock = new StatisticsBlock();
         memory = new Memory(maxMemorySize);
 
-        connect(statisticsBlock, SIGNAL(CollectStatisticsSignal(int)), this, SLOT(StatisticsCollected(int)));
+        connect(statisticsBlock, SIGNAL(CollectStatisticsSignal(int,int,int,double)), this,
+                SLOT(StatisticsCollected(int,int,int,double)));
 
         this->endModelingTime = endModelingTime;
 
         timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
-        timeArray[PROCESSING_UNIT_INDEX] = IDLE_TIME;//processingUnit->GetProcessTime();
+        timeArray[PROCESSING_UNIT_INDEX] = IDLE_TIME;
 
         requestDropNumber = requestDropPercent / 100;
         requestReturnNumber = requestReturnPercent / 100;
@@ -73,12 +74,12 @@ void ControlProgram::StartModeling()
 {
     for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime; currentModelingTime)
     {
-        statisticsBlock->CollectStatistics(memory->Size());
-       // currentModelingTime = GetMinTime();
-        double minTime = GetMinTime();
-        currentModelingTime += minTime;
-        RealizeEvents(minTime);
+        statisticsBlock->CollectStatistics(memory->Size(), memory->GetDropRequestNumber(), currentModelingTime,
+                                           processingUnit->GetWorkingTime());
+        currentModelingTime = GetMinTime();
+        RealizeEvents();
     }
+    emit ModelingFinishedSignal();
 }
 
 double ControlProgram::GetMinTime()
@@ -91,12 +92,13 @@ double ControlProgram::GetMinTime()
     }
     return minTime;
 }
-void ControlProgram::RealizeEvents(double minTime)
+void ControlProgram::RealizeEvents()
 {
-    if (timeArray[PROCESSING_UNIT_INDEX] <= minTime)
+    if (fabs(timeArray[PROCESSING_UNIT_INDEX] - currentModelingTime) < EPSILON &&
+            timeArray[PROCESSING_UNIT_INDEX] != IDLE_TIME)
     {
         timeArray[PROCESSING_UNIT_INDEX] = IDLE_TIME;
-        if (requestCounter <= requestReturnNumber)
+        if (requestCounter < requestReturnNumber)
         {
             Request request(currentModelingTime);
             memory->PutRequest(request);
@@ -105,27 +107,20 @@ void ControlProgram::RealizeEvents(double minTime)
         else
             requestCounter = 0;
     }
-    if (timeArray[INFORMATION_SOURSE_INDEX] <= minTime)
+    if (fabs(timeArray[INFORMATION_SOURSE_INDEX] - currentModelingTime) < EPSILON)
     {
         Request request(currentModelingTime);
         memory->PutRequest(request);
-        timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
+        timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime() + currentModelingTime;
     }
-    if (timeArray[PROCESSING_UNIT_INDEX] == IDLE_TIME)
+    if ((int)timeArray[PROCESSING_UNIT_INDEX] == IDLE_TIME)
     {
         if (!memory->isEmpty())
         {
             Request request = memory->GetRequest();
+            timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime() + currentModelingTime;
         }
     }
-  /*  if (timeArray[PROCESSING_UNIT_INDEX] <= currentModelingTime && timeArray[PROCESSING_UNIT_INDEX] != IDLE_TIME)
-    {
-        if (!memory->isEmpty())
-        {
-            Request request = memory->GetRequest();
-            timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
-        }
-    }*/
 }
 
 void ControlProgram::CleanTimeArray()
@@ -134,7 +129,8 @@ void ControlProgram::CleanTimeArray()
         timeArray[i] = 0.0;
 }
 
-void ControlProgram::StatisticsCollected(int currentRequestsNumberInMemory)
+void ControlProgram::StatisticsCollected(int currentRequestsNumberInMemory, int dropRequestNumber,
+                                         int optimalQueueSize, double procUnitLoadKoff)
 {
-    emit StatisticsCollectedSignal(currentRequestsNumberInMemory);
+    emit StatisticsCollectedSignal(currentRequestsNumberInMemory, dropRequestNumber, optimalQueueSize, procUnitLoadKoff);
 }
