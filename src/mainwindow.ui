@@ -7,26 +7,13 @@
     <x>0</x>
     <y>0</y>
     <width>979</width>
-    <height>424</height>
+    <height>499</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralWidget">
-   <widget class="QPushButton" name="pushButton">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>20</y>
-      <width>99</width>
-      <height>27</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
    <widget class="QLineEdit" name="edtModelingTime">
     <property name="geometry">
      <rect>
@@ -102,7 +89,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>10</string>
+     <string>9</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="edtMaxBorder">
@@ -213,7 +200,7 @@
     <property name="geometry">
      <rect>
       <x>10</x>
-      <y>270</y>
+      <y>410</y>
       <width>241</width>
       <height>27</height>
      </rect>
@@ -227,9 +214,74 @@
      <rect>
       <x>520</x>
       <y>30</y>
-      <width>256</width>
-      <height>211</height>
+      <width>441</width>
+      <height>401</height>
      </rect>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtRequestDropPercent">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>240</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>100</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="edtRequestReturnPercent">
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>270</y>
+      <width>113</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>0</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_8">
+    <property name="geometry">
+     <rect>
+      <x>190</x>
+      <y>240</y>
+      <width>181</width>
+      <height>20</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Процент заявок на выход</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_9">
+    <property name="geometry">
+     <rect>
+      <x>79</x>
+      <y>271</y>
+      <width>301</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Процент заявок на повторную обработку</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_10">
+    <property name="geometry">
+     <rect>
+      <x>520</x>
+      <y>10</y>
+      <width>171</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Статистика</string>
     </property>
    </widget>
   </widget>

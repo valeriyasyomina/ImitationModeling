@@ -18,12 +18,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void on_pushButton_clicked();
 
     void on_btnStartModeling_clicked();
 
 public slots:
-    void StatisticsCollected(int currentRequestsNumberInMemory);
+    void StatisticsCollected(int currentRequestsNumberInMemory, int dropRequestNumber,
+                             int optimalQueueSize, double procUnitLoadKoff);
+    void ModelingFinished();
 private:
     Ui::MainWindow *ui;
 };

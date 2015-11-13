@@ -6,25 +6,15 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    connect(Singleton::Instance().GetControlProgram(), SIGNAL(StatisticsCollectedSignal(int)), this,
-            SLOT(StatisticsCollected(int)));
+    connect(Singleton::Instance().GetControlProgram(), SIGNAL(StatisticsCollectedSignal(int,int,int,double)), this,
+            SLOT(StatisticsCollected(int,int,int,double)));
+    connect(Singleton::Instance().GetControlProgram(), SIGNAL(ModelingFinishedSignal()), this,
+            SLOT(ModelingFinished()));
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
-}
-
-void MainWindow::on_pushButton_clicked()
-{
-    Queue<int> q(10);
-    q.Add(1);
-    q.Add(2);
-    q.Add(3);
-    q = q;
-    int a = 0;
-    a = a + 9;
-    a++;
 }
 
 void MainWindow::on_btnStartModeling_clicked()
@@ -33,7 +23,8 @@ void MainWindow::on_btnStartModeling_clicked()
     {
         if (ui->edtModelingTime->text() == "" || ui->edtMaxMemorySize->text() == "" || ui->edtA->text() == "" ||
                 ui->edtB->text() == "" || ui->edtSigma->text() == "" || ui->edtMatExp->text() == "" ||
-                ui->edtMaxBorder->text() == "")
+                ui->edtMaxBorder->text() == "" || ui->edtRequestDropPercent->text() == "" ||
+                ui->edtRequestReturnPercent->text() == "")
             QMessageBox::information(this, "Error", "You have not inputed all data!", QMessageBox::Ok);
         else
         {
@@ -44,9 +35,12 @@ void MainWindow::on_btnStartModeling_clicked()
             double sigma = ui->edtSigma->text().toDouble();
             double matExp = ui->edtMatExp->text().toDouble();
             double maxBorder = ui->edtMaxBorder->text().toDouble();
+            int requestDropPercent = ui->edtRequestDropPercent->text().toInt();
+            int requestReturnPercent = ui->edtRequestReturnPercent->text().toInt();
 
             Singleton::Instance().GetControlProgram()->ConfigureSystem(endModelingTime, maxMemorySize, a, b, matExp,
-                                                                       sigma, maxBorder);
+                                                                       sigma, maxBorder, requestDropPercent,
+                                                                       requestReturnPercent);
             Singleton::Instance().GetControlProgram()->StartModeling();
         }
     }
@@ -56,7 +50,17 @@ void MainWindow::on_btnStartModeling_clicked()
     }
 }
 
-void MainWindow::StatisticsCollected(int currentRequestsNumberInMemory)
+void MainWindow::ModelingFinished()
 {
-    ui->lwStatistics->addItem(QString::null(currentRequestsNumberInMemory));
+    QMessageBox::information(this, "Процесс завершен", "Процесс моделирования завершен", QMessageBox::Ok);
+}
+
+void MainWindow::StatisticsCollected(int currentRequestsNumberInMemory, int dropRequestNumber,
+                                     int optimalQueueSize, double procUnitLoadKoff)
+{
+    QString statisticsString = "Число заявок в очереди = " + QString::number(currentRequestsNumberInMemory) + "\n" +
+            "Число потерянных заявок = " +  QString::number(dropRequestNumber) + "\n" +
+            "Оптимальный размер очереди = " + QString::number(optimalQueueSize) + "\n" +
+            "Коэффициент загрузки обраб. аппарата = " + QString::number(procUnitLoadKoff) + "\n";
+    ui->lwStatistics->addItem(statisticsString);
 }
