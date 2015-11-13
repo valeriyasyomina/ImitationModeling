@@ -6,9 +6,12 @@ ControlProgram::ControlProgram()
     processingUnit = NULL;
     statisticsBlock = NULL;
     memory = NULL;
-
     endModelingTime = 0.0;
     currentModelingTime = 0.0;
+    requestDropNumber = 0;
+    requestReturnNumber = 0;
+    requestCounter = 0;
+    CleanTimeArray();
 }
 
 ControlProgram::~ControlProgram()
@@ -36,11 +39,14 @@ ControlProgram::~ControlProgram()
 }
 
 void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
-                     double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator)
+                     double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator,
+                     int requestDropPercent, int requestReturnPercent)
 {
     try
     {
-        if (endModelingTime <= 0 || maxMemorySize <= 0 || sigma < 0 || sigma == maxBorderForNormalGenerator)
+        if (endModelingTime <= 0 || maxMemorySize <= 0 || sigma < 0 || sigma == maxBorderForNormalGenerator ||
+                requestDropPercent < 0 || requestDropPercent > 100 || requestReturnPercent < 0 ||
+                requestReturnPercent > 100)
             throw ErrorInputDataException("Error input parameters in ControlProgram::ConfigureSystem");
         informationSource = new InformationSource(sigma, matExp, 0, maxBorderForNormalGenerator, 12);
         processingUnit = new ProcessingUnit(a, b);
@@ -52,7 +58,10 @@ void ControlProgram::ConfigureSystem(double endModelingTime, int maxMemorySize,
         this->endModelingTime = endModelingTime;
 
         timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
-        timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
+        timeArray[PROCESSING_UNIT_INDEX] = IDLE_TIME;//processingUnit->GetProcessTime();
+
+        requestDropNumber = requestDropPercent / 100;
+        requestReturnNumber = requestReturnPercent / 100;
     }
     catch (std::bad_alloc& exception)
     {
@@ -65,8 +74,10 @@ void ControlProgram::StartModeling()
     for (currentModelingTime = 0.0; currentModelingTime <= endModelingTime; currentModelingTime)
     {
         statisticsBlock->CollectStatistics(memory->Size());
-        currentModelingTime = GetMinTime();
-        RealizeEvents();
+       // currentModelingTime = GetMinTime();
+        double minTime = GetMinTime();
+        currentModelingTime += minTime;
+        RealizeEvents(minTime);
     }
 }
 
@@ -75,27 +86,46 @@ double ControlProgram::GetMinTime()
     double minTime = timeArray[0];
     for (int i = 1; i < ARRAY_SIZE; i++)
     {
-        if (timeArray[i] < minTime)
+        if (timeArray[i] < minTime && timeArray[i] != IDLE_TIME)
             minTime = timeArray[i];
     }
     return minTime;
 }
-void ControlProgram::RealizeEvents()
+void ControlProgram::RealizeEvents(double minTime)
 {
-    if (timeArray[INFORMATION_SOURSE_INDEX] <= currentModelingTime)
+    if (timeArray[PROCESSING_UNIT_INDEX] <= minTime)
+    {
+        timeArray[PROCESSING_UNIT_INDEX] = IDLE_TIME;
+        if (requestCounter <= requestReturnNumber)
+        {
+            Request request(currentModelingTime);
+            memory->PutRequest(request);
+            requestCounter++;
+        }
+        else
+            requestCounter = 0;
+    }
+    if (timeArray[INFORMATION_SOURSE_INDEX] <= minTime)
     {
         Request request(currentModelingTime);
         memory->PutRequest(request);
         timeArray[INFORMATION_SOURSE_INDEX] = informationSource->GenerateRequestTime();
     }
-    if (timeArray[PROCESSING_UNIT_INDEX] <= currentModelingTime)
+    if (timeArray[PROCESSING_UNIT_INDEX] == IDLE_TIME)
+    {
+        if (!memory->isEmpty())
+        {
+            Request request = memory->GetRequest();
+        }
+    }
+  /*  if (timeArray[PROCESSING_UNIT_INDEX] <= currentModelingTime && timeArray[PROCESSING_UNIT_INDEX] != IDLE_TIME)
     {
         if (!memory->isEmpty())
         {
             Request request = memory->GetRequest();
             timeArray[PROCESSING_UNIT_INDEX] = processingUnit->GetProcessTime();
         }
-    }
+    }*/
 }
 
 void ControlProgram::CleanTimeArray()

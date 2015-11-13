@@ -8,7 +8,9 @@
 
 const int ARRAY_SIZE = 2;
 const int INFORMATION_SOURSE_INDEX = 0;
-const int PROCESSING_UNIT_INDEX =1;
+const int PROCESSING_UNIT_INDEX = 1;
+const int IDLE_TIME = -1;
+const int REQUEST_NUMBER = 10;
 
 class ControlProgram : public QObject
 {
@@ -21,16 +23,20 @@ private:
     double timeArray[ARRAY_SIZE];
     double currentModelingTime;
     double endModelingTime;
+    int requestDropNumber;              // из 10 заявок
+    int requestReturnNumber;            // из 10 заявок
+    int requestCounter;
 public:
     ControlProgram();
     ~ControlProgram();
 
     void ConfigureSystem(double endModelingTime, int maxMemorySize,
-                         double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator);
+                         double a, double b, double matExp, double sigma, double maxBorderForNormalGenerator,
+                         int requestDropPercent, int requestReturnPercent);
     void StartModeling();
 private:
     double GetMinTime();
-    void RealizeEvents();
+    void RealizeEvents(double minTime);
     void CleanTimeArray();
 public slots:
     void StatisticsCollected(int currentRequestsNumberInMemory);
