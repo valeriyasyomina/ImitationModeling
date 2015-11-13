@@ -25,8 +25,8 @@ private:
     double timeArray[ARRAY_SIZE];
     double currentModelingTime;
     double endModelingTime;
-    int requestDropNumber;              // из 10 заявок
-    int requestReturnNumber;            // из 10 заявок
+    int requestDropNumber;              // кол-во заявок на выход из системы (из 10 заявок)
+    int requestReturnNumber;            // кол-во заявок на повторную обрабокту (из 10 заявок)
     int requestCounter;
 public:
     ControlProgram();
