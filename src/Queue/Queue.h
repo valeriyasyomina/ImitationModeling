@@ -28,6 +28,7 @@ public:
     void Add(TypeName value);
     TypeName Get();
     bool isEmpty() const {return !size ? true : false;}
+    bool isFull() const {return size >= maxSize ? true : false;}
     void SetMaximumSize(int maxSize);
     int Size() const {return size;}
     int MaxSize() const {return maxSize;}
