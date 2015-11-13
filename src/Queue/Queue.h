@@ -7,6 +7,9 @@
 #include "Exception/QueueEmptyException.h"
 #include "Exception/ErrorInputDataException.h"
 
+#define USE_EXCEPTIONS
+#undef USE_EXCEPTIONS
+
 template <class TypeName>
 class Queue
 {
@@ -27,6 +30,7 @@ public:
     bool isEmpty() const {return !size ? true : false;}
     void SetMaximumSize(int maxSize);
     int Size() const {return size;}
+    int MaxSize() const {return maxSize;}
 private:
     void Free();
 };
@@ -42,19 +46,27 @@ Queue<TypeName>::Queue()
 template <class TypeName>
 Queue<TypeName>::Queue(int maxSize)
 {
+#ifdef USE_EXCEPTIONS
     if (maxSize <= 0)
         throw ErrorInputDataException("Error maxSize parameter in Queue<TypeName>::Queue(int)");
-    this->maxSize = maxSize;
-    size = 0;
-    head = NULL;
+#endif
+    if (maxSize > 0)
+    {
+        this->maxSize = maxSize;
+        size = 0;
+        head = NULL;
+    }
 }
 
 template <class TypeName>
 void Queue<TypeName>::SetMaximumSize(int maxSize)
 {
+#ifdef USE_EXCEPTIONS
     if (maxSize <= 0)
         throw ErrorInputDataException("Error maxSize parameter in Queue<TypeName>::SetMaximumSize(int)");
-    this->maxSize = maxSize;
+#endif
+    if (maxSize > 0)
+        this->maxSize = maxSize;
 }
 
 template <class TypeName>
@@ -119,24 +131,27 @@ void Queue<TypeName>::Add(TypeName value)
 {
     try
     {
+#ifdef USE_EXCEPTIONS
         if (size >= maxSize)
             throw QueueFullException("Error add! Queue is full");
-
-        if (!head)
+#endif
+        if (size < maxSize)
         {
-            head = new QueueElement<TypeName>(value);
-            size++;
+            if (!head)
+            {
+                head = new QueueElement<TypeName>(value);
+                size++;
+            }
+            else
+            {
+                QueueElement<TypeName>* curPointer = head;
+                for (; curPointer->next; curPointer = curPointer->next)
+                    ;
+                QueueElement<TypeName>* element = new QueueElement<TypeName>(value);
+                curPointer->next = element;
+                size++;
+            }
         }
-        else
-        {
-            QueueElement<TypeName>* curPointer = head;
-            for (; curPointer->next; curPointer = curPointer->next)
-                ;
-            QueueElement<TypeName>* element = new QueueElement<TypeName>(value);
-            curPointer->next = element;
-            size++;
-        }
-
     }
     catch (std::bad_alloc& exception)
     {
@@ -147,15 +162,19 @@ void Queue<TypeName>::Add(TypeName value)
 template <class TypeName>
 TypeName Queue<TypeName>::Get()
 {
+#ifdef USE_EXCEPTIONS
     if (!size)
         throw QueueEmptyException("Error get value! Queue is empty!");
-
-    TypeName value = head->value;
-    QueueElement<TypeName>* currentPointer = head;
-    head = head->next;
-    delete currentPointer;
-    size--;
-    return value;
+#endif
+    if (size > 0)
+    {
+        TypeName value = head->value;
+        QueueElement<TypeName>* currentPointer = head;
+        head = head->next;
+        delete currentPointer;
+        size--;
+        return value;
+    }
 }
 
 
